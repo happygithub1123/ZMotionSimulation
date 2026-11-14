@@ -1,4 +1,49 @@
-# ZMotionSDK - 专业C#运动控制SDK
+# ZMotionSimulation · 正运动仿真与调试平台
+
+基于 [lejoyke/ZMotionSDK](https://github.com/lejoyke/ZMotionSDK) 整合的 C# / WPF 运动控制实验平台，包含 SDK、桌面调试界面、本地 IO 状态控件和运行指南。
+
+当前代码提供真实控制器的连接与调试功能，尚未实现无硬件离线仿真后端。连接、IO、运动等操作通过 SDK 访问控制器。
+
+## 本地整合内容
+
+- 加入本地 IO 状态模型和控件，替代不可还原的 `WPFProject.Share` 包。
+- 整合连接管理、轴监控、轴控制、DI/DO、参数与运动缓存调试界面。
+- 补齐中文项目结构与运行指南，保留上游 SDK 和提交历史。
+
+## 构建与启动
+
+需要 Windows x64 和 .NET 8 SDK；使用 Visual Studio 时安装“.NET 桌面开发”工作负载。
+
+```powershell
+git clone https://github.com/happygithub1123/ZMotionSimulation.git
+Set-Location -LiteralPath '.\ZMotionSimulation'
+dotnet build .\ZMotionSDK.sln -c Release -p:Platform=x64
+
+# 原生库必须与 ZMotionTest.exe 位于同一目录。
+$appOutput = '.\tests\ZMotionTest\bin\x64\Release\net8.0-windows'
+Copy-Item -LiteralPath '.\src\ZMotionSDK\dll\zauxdll.dll' -Destination $appOutput
+Copy-Item -LiteralPath '.\src\ZMotionSDK\dll\zmotion.dll' -Destination $appOutput
+& (Join-Path $appOutput 'ZMotionTest.exe')
+```
+
+也可以打开根目录 `ZMotionSDK.sln`，将 `ZMotionTest` 设为启动项目，选择 `x64`，生成后复制上述原生库再运行。先连接控制器再打开 IO 页面；当前 IO 轮询依赖实际连接。
+
+## 目录与文档
+
+- `src/ZMotionSDK/`：SDK 与厂家原生通信库。
+- `tests/ZMotionTest/`：WPF 桌面应用，项目名沿用上游。
+- [项目结构与运行指南](docs/项目结构与运行指南.md)：逐文件说明、使用步骤与当前限制。
+- [IO 接口指南](docs/ZMotionIOClient_Guide.md)。
+- [来源与整合记录](docs/UPSTREAM.md)。
+- [上游原始 README](docs/UPSTREAM_README.md)。
+
+2026-11-14 已完成 Release / x64 编译：0 错误、150 个现有警告，主要涉及 XML 注释和空值检查。尚未验证实际控制器连接、运动或 IO。
+
+SDK 与原始 WPF 应用来源于 [lejoyke/ZMotionSDK](https://github.com/lejoyke/ZMotionSDK)，原作者为 Lejoy。以下保留上游 SDK 介绍与示例，其中描述应与当前源码及运行指南对照使用。
+
+---
+
+## 上游 SDK 原始说明
 
 [![.NET 8.0](https://img.shields.io/badge/.NET-8.0-blue.svg)](https://dotnet.microsoft.com/download/dotnet/8.0)
 [![版本](https://img.shields.io/badge/版本-1.0.4-green.svg)](https://www.nuget.org/packages/ZMotionSDK)

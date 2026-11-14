@@ -5,7 +5,6 @@ using System.Windows;
 using System.Windows.Input;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
-using WPFProject.Share.Model;
 using ZMotionSDK;
 using ZMotionSDK.Helper;
 using ZMotionTest.Models;
